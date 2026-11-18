@@ -164,7 +164,8 @@ public final class JdbcAcademicCatalogDao implements AcademicCatalogDao {
         String sql;
         switch (kind) {
             case DEPARTMENT:
-                sql = "SELECT EXISTS(SELECT 1 FROM programmes WHERE department_id = ? AND is_active = TRUE)";
+                sql = "SELECT EXISTS(SELECT 1 FROM programmes WHERE department_id = ? AND is_active = TRUE) "
+                        + "OR EXISTS(SELECT 1 FROM university_staff WHERE department_id = ? AND is_active = TRUE)";
                 break;
             case PROGRAMME:
                 sql = "SELECT EXISTS(SELECT 1 FROM courses WHERE programme_id = ? AND is_active = TRUE)";
@@ -176,6 +177,9 @@ public final class JdbcAcademicCatalogDao implements AcademicCatalogDao {
         }
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
+            if (kind == Kind.DEPARTMENT) {
+                statement.setLong(2, id);
+            }
             try (ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
                 return resultSet.getBoolean(1);

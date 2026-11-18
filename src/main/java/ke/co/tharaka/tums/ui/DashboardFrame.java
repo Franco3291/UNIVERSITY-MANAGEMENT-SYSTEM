@@ -5,6 +5,7 @@ import ke.co.tharaka.tums.model.Student;
 import ke.co.tharaka.tums.model.UserAccount;
 import ke.co.tharaka.tums.service.AcademicCatalogService;
 import ke.co.tharaka.tums.service.StudentService;
+import ke.co.tharaka.tums.service.StaffService;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -31,6 +32,7 @@ public final class DashboardFrame extends JFrame {
     private final UserAccount account;
     private final LoginFrame loginFrame;
     private final StudentService studentService;
+    private final StaffService staffService;
     private final AcademicCatalogService academicCatalogService;
     private final JPanel contentCards = new JPanel(new CardLayout());
     private final Map<AppModule, JPanel> moduleScreens = new EnumMap<AppModule, JPanel>(AppModule.class);
@@ -39,11 +41,13 @@ public final class DashboardFrame extends JFrame {
             UserAccount account,
             LoginFrame loginFrame,
             StudentService studentService,
+            StaffService staffService,
             AcademicCatalogService academicCatalogService) {
         super("TUMS | Dashboard");
         this.account = account;
         this.loginFrame = loginFrame;
         this.studentService = studentService;
+        this.staffService = staffService;
         this.academicCatalogService = academicCatalogService;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(900, 600));
@@ -115,6 +119,8 @@ public final class DashboardFrame extends JFrame {
                 screen = createHomeScreen();
             } else if (module == AppModule.STUDENTS) {
                 screen = new StudentManagementPanel(account, studentService);
+            } else if (module == AppModule.STAFF) {
+                screen = new StaffManagementPanel(account, staffService);
             } else if (module == AppModule.STAFF_AND_COURSES) {
                 screen = new AcademicCatalogPanel(account, academicCatalogService);
             } else {

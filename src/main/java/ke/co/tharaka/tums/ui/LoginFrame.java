@@ -4,6 +4,7 @@ import ke.co.tharaka.tums.model.UserAccount;
 import ke.co.tharaka.tums.service.AcademicCatalogService;
 import ke.co.tharaka.tums.service.AuthenticationService;
 import ke.co.tharaka.tums.service.StudentService;
+import ke.co.tharaka.tums.service.StaffService;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -34,6 +35,7 @@ public final class LoginFrame extends JFrame {
 
     private final AuthenticationService authenticationService;
     private final StudentService studentService;
+    private final StaffService staffService;
     private final AcademicCatalogService academicCatalogService;
     private final JTextField usernameField = new JTextField(22);
     private final JPasswordField passwordField = new JPasswordField(22);
@@ -42,10 +44,12 @@ public final class LoginFrame extends JFrame {
     public LoginFrame(
             AuthenticationService authenticationService,
             StudentService studentService,
+            StaffService staffService,
             AcademicCatalogService academicCatalogService) {
         super("TUMS | Sign in");
         this.authenticationService = authenticationService;
         this.studentService = studentService;
+        this.staffService = staffService;
         this.academicCatalogService = academicCatalogService;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(420, 400));
@@ -160,7 +164,8 @@ public final class LoginFrame extends JFrame {
                                 "Sign in failed", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
-                    new DashboardFrame(account, LoginFrame.this, studentService, academicCatalogService)
+                    new DashboardFrame(account, LoginFrame.this, studentService, staffService,
+                            academicCatalogService)
                             .setVisible(true);
                     dispose();
                 } catch (InterruptedException exception) {

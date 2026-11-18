@@ -3,11 +3,13 @@ package ke.co.tharaka.tums;
 import ke.co.tharaka.tums.config.AppConfig;
 import ke.co.tharaka.tums.dao.JdbcAcademicCatalogDao;
 import ke.co.tharaka.tums.dao.JdbcStudentDao;
+import ke.co.tharaka.tums.dao.JdbcStaffDao;
 import ke.co.tharaka.tums.dao.JdbcUserDao;
 import ke.co.tharaka.tums.service.AdminBootstrapService;
 import ke.co.tharaka.tums.service.AcademicCatalogService;
 import ke.co.tharaka.tums.service.AuthenticationService;
 import ke.co.tharaka.tums.service.StudentService;
+import ke.co.tharaka.tums.service.StaffService;
 import ke.co.tharaka.tums.ui.LoginFrame;
 
 import javax.swing.JOptionPane;
@@ -47,9 +49,11 @@ public final class Main {
                     AuthenticationService authenticationService =
                             new AuthenticationService(new JdbcUserDao(config));
                     StudentService studentService = new StudentService(new JdbcStudentDao(config));
+                    StaffService staffService = new StaffService(new JdbcStaffDao(config));
                     AcademicCatalogService academicCatalogService = new AcademicCatalogService(
                             new JdbcAcademicCatalogDao(config));
-                    new LoginFrame(authenticationService, studentService, academicCatalogService).setVisible(true);
+                    new LoginFrame(authenticationService, studentService, staffService,
+                            academicCatalogService).setVisible(true);
                 }
             });
         } catch (IllegalArgumentException exception) {

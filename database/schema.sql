@@ -86,3 +86,22 @@ CREATE TABLE IF NOT EXISTS courses (
         FOREIGN KEY (programme_id) REFERENCES programmes (id),
     CONSTRAINT chk_courses_credit_hours CHECK (credit_hours BETWEEN 1 AND 12)
 );
+
+CREATE TABLE IF NOT EXISTS university_staff (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    staff_number VARCHAR(32) NOT NULL,
+    full_name VARCHAR(150) NOT NULL,
+    qualification VARCHAR(150) NOT NULL,
+    department_id BIGINT UNSIGNED NOT NULL,
+    phone VARCHAR(30) NULL,
+    email VARCHAR(254) NULL,
+    responsibility VARCHAR(150) NOT NULL,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY ux_university_staff_number (staff_number),
+    KEY ix_university_staff_name (full_name),
+    KEY ix_university_staff_department (department_id),
+    CONSTRAINT fk_university_staff_department
+        FOREIGN KEY (department_id) REFERENCES departments (id)
+);

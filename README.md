@@ -1,6 +1,6 @@
 # Tharaka University Management System (TUMS)
 
-TUMS is a Java 8-compatible desktop application built with Swing, JDBC and MySQL. The application currently provides database-backed sign-in, first-administrator setup, role-aware navigation, student record management, and academic catalogue management for departments, programmes, and courses. Staff, results, finance, and other operational modules are planned follow-on work and are identified in the dashboard as not yet implemented.
+TUMS is a Java 8-compatible desktop application built with Swing, JDBC and MySQL. The application currently provides database-backed sign-in, first-administrator setup, role-aware navigation, student and staff record management, and academic catalogue management for departments, programmes, and courses. Results, finance, enrolment, and other operational modules are planned follow-on work and are identified in the dashboard as not yet implemented.
 
 ## Requirements
 
@@ -12,7 +12,7 @@ Open the project root in IntelliJ IDEA as a Maven project.
 
 ## Set up MySQL
 
-1. Run [`database/schema.sql`](database/schema.sql) in MySQL Workbench or the MySQL command-line client. It creates the `tums` database, authentication, student, department, programme, and course tables. If you ran an earlier version of the script, run the updated script again; its table creation statements are safe to re-run.
+1. Run [`database/schema.sql`](database/schema.sql) in MySQL Workbench or the MySQL command-line client. It creates the `tums` database, authentication, student, department, programme, course, and staff tables. If you ran an earlier version of the script, run the updated script again; its table creation statements are safe to re-run.
 2. Create a dedicated MySQL account for the application and grant it access to `tums`. Keep the account password out of source control. For a local-only development database, for example:
 
    ```sql
@@ -65,13 +65,17 @@ Student fields include admission number, full name, gender, phone, email, progra
 
 The Academic catalogue screen manages departments, programmes, and courses as linked records. Search is available within each catalogue tab. Administrators may create, update, and archive entries; lecturers may view the catalogue. New programmes require an active department, and new courses require an active programme. Parent records with active children cannot be archived. Codes are unique, and course credit hours are validated from 1 to 12.
 
+## Staff records
+
+The Staff records screen supports searching by staff number, name, qualification, department, responsibility, or email. Administrators may register, edit, and archive staff; lecturers may view the directory. Staff records require a unique staff number and an active department and include qualification, contact details, and responsibility.
+
 ## Role navigation
 
-- **Administrator:** student records, staff and courses, exams and results, fees and finance, and system administration.
-- **Lecturer:** student records, staff and courses, and exams and results.
+- **Administrator:** student records, staff records, academic catalogue, exams and results, fees and finance, and system administration.
+- **Lecturer:** student records, staff records, academic catalogue, and exams and results.
 - **Finance officer:** fees and finance.
 
-Navigation is filtered by role, and student and academic catalogue operations enforce their role permissions in the service layer. Exams and results, fees and finance, and system administration are still placeholders until their corresponding workflows are implemented. The dashboard window uses the normal Windows minimize, maximize/restore, and close controls.
+Navigation is filtered by role, and student, staff, and academic catalogue operations enforce their role permissions in the service layer. Enrolment, exams and results, fees and finance, and system administration are still placeholders until their corresponding workflows are implemented. The dashboard window uses the normal Windows minimize, maximize/restore, and close controls.
 
 ## Project layout
 
@@ -80,6 +84,6 @@ Navigation is filtered by role, and student and academic catalogue operations en
 - `dao`: JDBC persistence
 - `database`: MySQL schema
 - `model`: user account, roles, and module access rules
-- `service`: authentication, administrator setup, student, and academic catalogue business rules
+- `service`: authentication, administrator setup, student, staff, and academic catalogue business rules
 - `security`: password hashing
 - `config`: environment-based database configuration
